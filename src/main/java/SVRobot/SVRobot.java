@@ -1,5 +1,6 @@
 package SVRobot;
 
+import Manager.ExcelManager;
 import Router.Router;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
@@ -10,16 +11,16 @@ import java.util.concurrent.Executors;
 
 public class SVRobot {
     public static void main(String[] args) {
-        HttpServer httpserver;
+        ExcelManager.init();
+        HttpServer httpServer;
         try {
-            httpserver = HttpServerProvider.provider().createHttpServer(new InetSocketAddress(5701), Integer.MAX_VALUE);
+            httpServer = HttpServerProvider.provider().createHttpServer(new InetSocketAddress(5701), Integer.MAX_VALUE);
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
-        httpserver.createContext("/", new Router());
-        httpserver.setExecutor(Executors.newCachedThreadPool());
-        System.out.println("=== Start Server ===");
-        httpserver.start();
+        httpServer.createContext("/", new Router());
+        httpServer.setExecutor(Executors.newCachedThreadPool());
+        httpServer.start();
     }
 }
